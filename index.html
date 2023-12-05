@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather News</title>
+    <link rel="stylesheet" href="./wather.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body background="./images/7280763.jpg" >
+
+    <div class="text-center text-white p-3 my-5  container">
+        
+        <h1 class="text-info" >Weather News </h1>
+        <input id="data" placeholder="Enter country name" type="text" class="form-control my-5">
+        <button onclick="CurrentWeather()" type="button" class="btn btn-success">SEARCH</button>
+        <button onclick="weathercheck()" type="button" class="btn btn-primary">CURRENT WEATHER</button>
+    </div>
+    <div id="result" class="container p-3 border shadow-lg">
+
+    </div>
+
+    <script>
+        function CurrentWeather() {
+            weathernew = data.value
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weathernew}&appid=5b4bee0ba241d092159faf007e166080`)
+                .then(response => response.json())
+                .then(out => displayData(out));
+        }
+
+        function displayData(dataArray) {
+            cityname = dataArray.name;
+            status = dataArray.weather[0].main;
+            var tempp = (dataArray.main.temp - 273.15).toFixed(2) + '&deg;C';
+            feels = (dataArray.main.feels_like - 273.15).toFixed(2) + '&deg;C';
+            iconCode = dataArray.weather[0].icon;
+            iconUrl = `https://openweathermap.org/img/w/${iconCode}.png`;
+
+            result.innerHTML = `
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <h5 class="card-title">${cityname}  <img src="${iconUrl}"</h5>
+                    </div>
+                  
+                    </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">${status}</h5>
+                    </div>
+                </div>
+
+                <div class="card margin ml-3 mb-3 mr-3">
+                <div class="card-body">
+                    <h5 class="card-title"> Temperature :    ${tempp}</h5>
+                </div>
+            </div>
+
+            <div class="card mb-3 mr-3">
+                <div class="card-body">
+                    <h5 class="card-title"> Feels like : ${feels}</h5>
+                </div>
+            </div>
+            `;
+        }
+    </script>
+</body>
+</html>
